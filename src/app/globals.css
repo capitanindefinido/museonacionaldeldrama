@@ -1,26 +1,60 @@
 @import "tailwindcss";
+@plugin "daisyui";
 
+/* Variables del sistema de diseño - Referencia basada en index.css */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Colores base HSL - Museo Nacional del Drama */
+  --background: 240 50% 5%;  /* Negro azulado #0A0A1A */
+  --foreground: 0 0% 98%;
+  --navbar-height: 4rem;
+
+  --card: 240 40% 8%;
+  --card-foreground: 0 0% 98%;
+
+  --popover: 240 40% 8%;
+  --popover-foreground: 0 0% 98%;
+
+  --primary: 195 100% 50%;  /* Azul neón #00BFFF */
+  --primary-foreground: 240 50% 5%;
+
+  --secondary: 320 100% 50%;  /* Magenta #FF00A0 */
+  --secondary-foreground: 0 0% 98%;
+
+  --muted: 240 30% 15%;
+  --muted-foreground: 240 10% 60%;
+
+  --accent: 45 95% 74%;  /* Dorado suave #F9D57E */
+  --accent-foreground: 240 50% 5%;
+
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+
+  --border: 240 30% 20%;
+  --input: 240 30% 20%;
+  --ring: 195 100% 50%;
+
+  --radius: 0.5rem;
+
+  /* Variables de color en formato hex para compatibilidad */
+  --background-hex: #0A0A1A;
+  --foreground-hex: #ededed;
+
+  /* Gradientes y sombras cinematográficas */
+  --gradient-museo: linear-gradient(135deg, hsl(195 100% 50% / 0.2), hsl(320 100% 50% / 0.2));
+  --shadow-neon-blue: 0 0 40px hsl(195 100% 50% / 0.4);
+  --shadow-neon-magenta: 0 0 40px hsl(320 100% 50% / 0.4);
+  --shadow-golden: 0 10px 30px hsl(45 95% 74% / 0.3);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-background: var(--background-hex);
+  --color-foreground: var(--foreground-hex);
+  --font-sans: Montserrat, Arial, Helvetica, sans-serif;
+  --font-mono: monospace;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background-hex);
+  color: var(--foreground-hex);
+  font-family: var(--font-sans);
 }
