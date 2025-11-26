@@ -15,7 +15,7 @@ export default function ArtworkModal({ artwork, onClose }) {
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-5xl max-h-[90vh] bg-[#101123] border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+        className="relative w-full max-w-5xl max-h-[90vh] bg-[#101123] border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col"
         style={{ boxShadow: '0 24px 70px rgba(5, 5, 15, 0.65)' }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -27,8 +27,8 @@ export default function ArtworkModal({ artwork, onClose }) {
           ✕
         </button>
 
-        <div className="flex h-full flex-col md:flex-row">
-          <div className="md:w-1/2 border-b border-white/10 bg-[#0F101E] md:border-b-0 md:border-r">
+        <div className="flex flex-col md:flex-row min-h-0 flex-1">
+          <div className="md:w-1/2 border-b border-white/10 bg-[#0F101E] md:border-b-0 md:border-r flex-shrink-0">
             <div className="relative h-full w-full aspect-[4/3] md:h-full md:min-h-[360px]">
               {has3DModel ? (
                 <Artwork3DViewer modelUrl={artwork.image_3d} />
@@ -45,7 +45,7 @@ export default function ArtworkModal({ artwork, onClose }) {
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-8 md:p-10">
+          <div className="flex-1 overflow-y-auto p-8 md:p-10 min-h-0">
             <div className="flex h-full flex-col gap-8">
               <header className="space-y-3">
                 <h2 className="text-3xl md:text-4xl font-semibold text-white tracking-tight">
