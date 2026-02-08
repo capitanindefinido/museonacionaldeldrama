@@ -118,7 +118,7 @@ export const artworks = [
     image_3d: '/ideas/cuadros/deja.glb',
     iframe: '<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/0SC5kiVv9K0X1oUPy7E4D8?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>'
   },
-  // Pared frontal - 1 obra
+  // Pared frontal - 2 obras
   {
     id: 8,
     slug: 'sutro',
@@ -135,6 +135,23 @@ export const artworks = [
     rotation: [0, Math.PI, 0],
     image_3d: '/ideas/cuadros/sutro.glb',
     iframe: '<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/1BaILXNwmrTXAnHiXkGGG0?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>'
+  },
+  {
+    id: 9,
+    slug: 'manifiesto-remix',
+    title: 'MANIFIESTO (Remix)',
+    year: 2023,
+    artist: 'Drama26',
+    image: '/ideas/museo9.png',
+    feat: 'Killua97',
+    phrase: '"Ya no te sigo, pero no te he podido bloquear"',
+    summary: 'Una nueva lectura del Manifiesto original a dos voces, con la impronta de Killua97 en el estudio.',
+    description: 'Remix de MANIFIESTO en colaboración con Killua97. La versión original, que habla de cómo una canción nos lleva al recuerdo de alguien, se reversiona aquí con una producción y voces que suman otra capa al tema. Grabado en estudio, con la misma base emocional pero con el sello de ambos artistas.',
+    credits: 'Remix y voces: Killua97 - Base: ZAP - Grabación y mezcla: por definir',
+    position: [-2.5, 1.5, 4.9],
+    rotation: [0, Math.PI, 0],
+    image_3d: '/ideas/cuadros/manifiesto.glb',
+    iframe: '<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/4inkJBTonRaT8dIKqjaM8e?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>'
   }
 ];
 
