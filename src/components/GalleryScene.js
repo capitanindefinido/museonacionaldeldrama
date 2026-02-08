@@ -169,6 +169,64 @@ function PottedPlant({ position = [0, 0, 0] }) {
   );
 }
 
+// Zócalo y moldura para una pared (museo)
+const baseboardHeight = 0.22;
+const baseboardDepth = 0.12;
+const corniceHeight = 0.18;
+const corniceDepth = 0.1;
+const trimColor = '#E0DDD8';
+const trimMaterial = { color: trimColor, roughness: 0.85, metalness: 0.05 };
+
+function WallTrim({ wall, length }) {
+  const isZ = wall === 'back' || wall === 'front';
+  const baseOffset = baseboardDepth / 2;
+  const corniceOffset = corniceDepth / 2;
+  let bx, by, bz, cx, cy, cz;
+  let bw, bd, cw, cd;
+  if (wall === 'back') {
+    bx = 0; by = baseboardHeight / 2; bz = -5 + 0.1 + baseOffset;
+    cx = 0; cy = 5 - corniceHeight / 2; cz = -5 + 0.1 + corniceOffset;
+    bw = length; bd = baseboardDepth; cw = length; cd = corniceDepth;
+  } else if (wall === 'front') {
+    bx = 0; by = baseboardHeight / 2; bz = 5 - 0.1 - baseOffset;
+    cx = 0; cy = 5 - corniceHeight / 2; cz = 5 - 0.1 - corniceOffset;
+    bw = length; bd = baseboardDepth; cw = length; cd = corniceDepth;
+  } else if (wall === 'left') {
+    bx = -5 + 0.1 + baseOffset; by = baseboardHeight / 2; bz = 0;
+    cx = -5 + 0.1 + corniceOffset; cy = 5 - corniceHeight / 2; cz = 0;
+    bw = baseboardDepth; bd = length; cw = corniceDepth; cd = length;
+  } else {
+    bx = 5 - 0.1 - baseOffset; by = baseboardHeight / 2; bz = 0;
+    cx = 5 - 0.1 - corniceOffset; cy = 5 - corniceHeight / 2; cz = 0;
+    bw = baseboardDepth; bd = length; cw = corniceDepth; cd = length;
+  }
+  return (
+    <group>
+      <mesh position={[bx, by, bz]} receiveShadow>
+        <boxGeometry args={isZ ? [bw, baseboardHeight, bd] : [bw, baseboardHeight, bd]} />
+        <meshStandardMaterial {...trimMaterial} />
+      </mesh>
+      <mesh position={[cx, cy, cz]} receiveShadow>
+        <boxGeometry args={isZ ? [cw, corniceHeight, cd] : [cw, corniceHeight, cd]} />
+        <meshStandardMaterial {...trimMaterial} />
+      </mesh>
+    </group>
+  );
+}
+
+// Foco de techo (recessed / riel)
+function CeilingSpot({ position }) {
+  return (
+    <group position={position}>
+      <mesh position={[0, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[0.15, 0.18, 0.08, 16]} />
+        <meshStandardMaterial color="#2a2a2a" roughness={0.6} metalness={0.3} />
+      </mesh>
+      <pointLight position={[0, -0.2, 0]} intensity={0.8} color="#fffef5" distance={6} decay={2} />
+    </group>
+  );
+}
+
 const GalleryRoom = ({
   artworks,
   onArtworkClick,
@@ -220,35 +278,40 @@ const GalleryRoom = ({
         />
       </mesh>
 
-      {/* Pared trasera */}
+      {/* Paredes (tono galería) */}
       <mesh position={[0, 2.5, -5]} receiveShadow>
         <boxGeometry args={[14, 5, 0.2]} />
-        <meshStandardMaterial color="#F5F5F3" roughness={0.8} />
+        <meshStandardMaterial color="#F2F0EC" roughness={0.85} />
       </mesh>
-
-      {/* Pared izquierda */}
       <mesh position={[-5, 2.5, 0]} rotation={[0, Math.PI / 2, 0]} receiveShadow>
         <boxGeometry args={[14, 5, 0.2]} />
-        <meshStandardMaterial color="#F5F5F3" roughness={0.8} />
+        <meshStandardMaterial color="#F2F0EC" roughness={0.85} />
       </mesh>
-
-      {/* Pared derecha */}
       <mesh position={[5, 2.5, 0]} rotation={[0, -Math.PI / 2, 0]} receiveShadow>
         <boxGeometry args={[14, 5, 0.2]} />
-        <meshStandardMaterial color="#F5F5F3" roughness={0.8} />
+        <meshStandardMaterial color="#F2F0EC" roughness={0.85} />
       </mesh>
-
-      {/* Pared frontal */}
       <mesh position={[0, 2.5, 5]} rotation={[0, Math.PI, 0]} receiveShadow>
         <boxGeometry args={[14, 5, 0.2]} />
-        <meshStandardMaterial color="#F5F5F3" roughness={0.8} />
+        <meshStandardMaterial color="#F2F0EC" roughness={0.85} />
       </mesh>
 
-      {/* Techo */}
-      <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 5, 0]}>
+      {/* Zócalos y molduras (estilo museo) */}
+      <WallTrim wall="back" length={14} />
+      <WallTrim wall="front" length={14} />
+      <WallTrim wall="left" length={14} />
+      <WallTrim wall="right" length={14} />
+
+      {/* Techo con focos */}
+      <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 5, 0]} receiveShadow>
         <planeGeometry args={[12, 12]} />
-        <meshStandardMaterial color="#FAFAFA" />
+        <meshStandardMaterial color="#F5F4F2" roughness={0.9} />
       </mesh>
+      <CeilingSpot position={[0, 4.92, 0]} />
+      <CeilingSpot position={[-2.5, 4.92, -2.5]} />
+      <CeilingSpot position={[2.5, 4.92, -2.5]} />
+      <CeilingSpot position={[-2.5, 4.92, 2.5]} />
+      <CeilingSpot position={[2.5, 4.92, 2.5]} />
 
       {/* Obras de arte (sin Ni cuenta: se abre al hacer click en el maniquí) */}
       {artworksOnWalls.map((artwork) => (

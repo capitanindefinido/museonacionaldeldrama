@@ -45,10 +45,12 @@ function ArtworkContentImage({ artwork, setHovered, onClick }) {
   );
 }
 
-// Contenido del cuadro: modelo 3D GLB (cuando existe image_3d)
-function ArtworkContentModel({ artwork, setHovered, onClick }) {
+// Contenido del cuadro: modelo 3D GLB. Llama onLoaded cuando está listo para ocultar la imagen.
+function ArtworkContentModel({ artwork, setHovered, onClick, onLoaded }) {
   const { scene } = useGLTF(artwork.image_3d);
   const innerRef = useRef(null);
+  const onLoadedRef = useRef(onLoaded);
+  onLoadedRef.current = onLoaded;
 
   useEffect(() => {
     if (!scene || !innerRef.current) return;
@@ -63,11 +65,12 @@ function ArtworkContentModel({ artwork, setHovered, onClick }) {
     const center = box.getCenter(new THREE.Vector3());
     const size = box.getSize(new THREE.Vector3());
     const maxDim = Math.max(size.x, size.y, size.z);
-    const scale = maxDim > 0 ? 1.1 / maxDim : 1; // 1.1 = altura del área del marco
+    const scale = maxDim > 0 ? 1.1 / maxDim : 1;
     cloned.scale.setScalar(scale);
     cloned.position.set(-center.x * scale, -center.y * scale, -center.z * scale);
     innerRef.current.clear();
     innerRef.current.add(cloned);
+    onLoadedRef.current?.();
   }, [scene]);
 
   return (
@@ -81,23 +84,39 @@ function ArtworkContentModel({ artwork, setHovered, onClick }) {
   );
 }
 
-function ArtworkContent({ artwork, hovered, setHovered, onClick }) {
-  if (artwork.image_3d) {
-    return (
-      <Suspense
-        fallback={
-          <mesh position={[0, 0, 0.015]}>
-            <planeGeometry args={[1.5, 1.1]} />
-            <meshStandardMaterial color="#333" />
-          </mesh>
-        }
-      >
-        <ArtworkContentModel
+// Imagen primero; cuando el GLB termina de cargar se muestra el modelo 3D.
+function ArtworkContentImageThen3D({ artwork, setHovered, onClick }) {
+  const [showModel, setShowModel] = useState(false);
+
+  return (
+    <>
+      {!showModel && (
+        <ArtworkContentImage
           artwork={artwork}
           setHovered={setHovered}
           onClick={onClick}
         />
+      )}
+      <Suspense fallback={null}>
+        <ArtworkContentModel
+          artwork={artwork}
+          setHovered={setHovered}
+          onClick={onClick}
+          onLoaded={() => setShowModel(true)}
+        />
       </Suspense>
+    </>
+  );
+}
+
+function ArtworkContent({ artwork, hovered, setHovered, onClick }) {
+  if (artwork.image_3d) {
+    return (
+      <ArtworkContentImageThen3D
+        artwork={artwork}
+        setHovered={setHovered}
+        onClick={onClick}
+      />
     );
   }
   return (
